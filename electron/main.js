@@ -52,6 +52,7 @@ let nextDueAt = 0;
 let attempt = 0; // re-asks used in the current reminder cycle
 let awaiting = false; // a question is currently on screen
 let locked = false;
+let mascotVisible = true; // the companion overlay is showing (the renderer reports this)
 
 // ---------- state helpers ----------
 const buddy = () => Characters.get(store.settings.character).name;
@@ -102,6 +103,16 @@ function broadcast() {
 
 const isPaused = () => store.settings.pausedUntil > now();
 
+// The overlay is only on screen when it has something to do: a reminder is due,
+// the buddy was asked for, or the user chose "hangs out all day". Hiding the
+// window while the buddy is away is what guarantees he can never be left
+// stranded on screen by a work-area change, a Space switch or a resize.
+function applyMascotVisibility() {
+  if (!mascotWin || mascotWin.isDestroyed()) return;
+  if (store.settings.hidden || !mascotVisible) mascotWin.hide();
+  else mascotWin.showInactive();
+}
+
 // ---------- schedule ----------
 const hm = (str) => { const [h, m] = String(str).split(':').map(Number); return (h || 0) * 60 + (m || 0); };
 const minutesNow = (d = new Date()) => d.getHours() * 60 + d.getMinutes();
@@ -148,7 +159,8 @@ function reschedule(from = now()) {
 function fire(kind = 'interval') {
   if (!mascotWin || mascotWin.isDestroyed()) return;
   awaiting = true;
-  mascotWin.showInactive();
+  mascotVisible = true; // a question is about to be asked, so the stage must be on screen
+  applyMascotVisibility();
   mascotWin.webContents.send('remind', { kind, attempt, state: snapshot() });
   // Don't fire again until answered (the renderer reports back, with a timeout).
   nextDueAt = now() + 24 * 3600000;
@@ -228,7 +240,7 @@ function createMascotWindow() {
     }
   });
   mascotWin.loadFile(path.join(__dirname, '../src/mascot/index.html'));
-  mascotWin.once('ready-to-show', () => { if (!store.settings.hidden) mascotWin.showInactive(); });
+  mascotWin.once('ready-to-show', applyMascotVisibility);
   mascotWin.on('closed', () => (mascotWin = null));
 }
 
@@ -255,8 +267,7 @@ function openPanel(tab) {
 function toggleMute() { setSettings({ muted: !store.settings.muted }); }
 function setHidden(h) {
   setSettings({ hidden: h });
-  if (!mascotWin) return;
-  if (h) mascotWin.hide(); else mascotWin.showInactive();
+  applyMascotVisibility();
 }
 function pause(mode) {
   let until = 0;
@@ -278,10 +289,25 @@ function nextLabel() {
   const mins = Math.round((nextDueAt - now()) / 60000);
   if (mins <= 1) return '⏰ Next reminder: any moment now';
   if (mins < 90) return `⏰ Next reminder in ${mins} min`;
-  const d = new Date(nextDueAt);
-  const sameDay = d.toDateString() === new Date().toDateString();
-  const t = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-  return `⏰ Next reminder ${sameDay ? 'at' : 'tomorrow at'} ${t}`;
+  return `⏰ Next reminder ${dayWord(nextDueAt)}at ${clockTime(nextDueAt)}`;
+}
+
+// "9:00 PM" — hour12 is forced so no locale can drop the AM/PM, which made
+// "Next reminder at 9:00" read as tonight when it actually meant tomorrow morning.
+function clockTime(ms) {
+  const d = new Date(ms);
+  const s = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+  if (/\d\s*[ap]\.?m/i.test(s)) return s;
+  return `${(d.getHours() % 12) || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'AM' : 'PM'}`;
+}
+// '' for today, 'tomorrow ' for tomorrow, 'Sat ' for anything further out.
+function dayWord(ms) {
+  const d = new Date(ms), t = new Date();
+  const key = (x) => `${x.getFullYear()}-${x.getMonth()}-${x.getDate()}`;
+  if (key(d) === key(t)) return '';
+  const tm = new Date(t); tm.setDate(tm.getDate() + 1);
+  if (key(d) === key(tm)) return 'tomorrow ';
+  return `${d.toLocaleDateString([], { weekday: 'short' })} `;
 }
 
 function menuTemplate() {
@@ -393,6 +419,7 @@ on('win:size', (_e, w, h) => { if (mascotWin && !mascotWin.isDestroyed()) mascot
 on('settings:update', (_e, patch) => setSettings(patch));
 on('answer', (_e, answer) => { if (['yes', 'no', 'later', 'timeout'].includes(answer) && awaiting) handleAnswer(answer); });
 on('mouse:ignore', (_e, ignore) => { if (mascotWin && !mascotWin.isDestroyed()) mascotWin.setIgnoreMouseEvents(!!ignore, { forward: true }); });
+on('mascot:visible', (_e, v) => { mascotVisible = !!v; applyMascotVisibility(); });
 on('menu:context', () => Menu.buildFromTemplate(menuTemplate()).popup({ window: mascotWin }));
 on('panel:open', (_e, tab) => openPanel(tab));
 on('water:log', (_e, d) => logWater(Number(d)));

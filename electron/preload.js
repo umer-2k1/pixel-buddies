@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('pf', {
   getDisplay: () => ipcRenderer.invoke('display:get'),
   onDisplay: on('display'),
   setIgnoreMouse: (ignore) => ipcRenderer.send('mouse:ignore', ignore),
+  setVisible: (visible) => ipcRenderer.send('mascot:visible', !!visible),
   contextMenu: () => ipcRenderer.send('menu:context'),
   openPanel: (tab) => ipcRenderer.send('panel:open', tab),
   // panel window

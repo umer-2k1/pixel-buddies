@@ -34,6 +34,27 @@
   const winH = () => Math.round(CH()) + 175;
   const set = () => S.snap && S.snap.settings;
   const vars = () => ({ name: (set() && set().userName) || '', mascot: Characters.get(set() && set().character).name });
+  // The overlay window is hidden entirely while the buddy is away, so nothing of
+  // him (or an old speech bubble) can ever be left showing between reminders.
+  const setVisible = (v) => { if (pf.setVisible) pf.setVisible(v); };
+
+  // "9:00 PM" — always spell out AM/PM; a bare "9:00" reads as tonight even when
+  // the next reminder is tomorrow morning.
+  function clockTime(ms) {
+    const d = new Date(ms);
+    const s = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    if (/\d\s*[ap]\.?m/i.test(s)) return s;
+    return `${(d.getHours() % 12) || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'AM' : 'PM'}`;
+  }
+  // '' for today, 'tomorrow ' for tomorrow, 'Sat ' for anything further out.
+  function dayWord(ms) {
+    const d = new Date(ms), t = new Date();
+    const key = (x) => `${x.getFullYear()}-${x.getMonth()}-${x.getDate()}`;
+    if (key(d) === key(t)) return '';
+    const tm = new Date(t); tm.setDate(tm.getDate() + 1);
+    if (key(d) === key(tm)) return 'tomorrow ';
+    return `${d.toLocaleDateString([], { weekday: 'short' })} `;
+  }
 
   // ---------- layout ----------
   // S.x is Bao's centre in screen space (relative to the work area). The window
@@ -194,7 +215,9 @@
   let parts = [], confettiOn = false, lastC = 0;
   function sizeCanvas() { cv.width = innerWidth; cv.height = innerHeight; }
   sizeCanvas();
-  window.addEventListener('resize', () => { sizeCanvas(); S.x = clamp(S.x, 60, W() - 60); });
+  // While the buddy is "away" he is parked off the left edge — never clamp him
+  // back on screen then (that is how he kept reappearing between reminders).
+  window.addEventListener('resize', () => { sizeCanvas(); if (!S.away) S.x = clamp(S.x, 60, W() - 60); });
   function confetti(n = 60) {
     const colors = ['#5cc3ff', '#ff8fb1', '#ffd45c', '#8de6b8', '#b69bff', '#ff9a5c'];
     const ox = charCx, oy = innerHeight - CH() * 0.7;
@@ -228,6 +251,7 @@
   async function enter(c) {
     if (!S.away) return;
     S.away = false;
+    setVisible(true);
     S.x = -150; S.dir = 1;
     layout();
     m.set({ ...neutral() });
@@ -250,6 +274,9 @@
     const speed = clamp((S.x + 170) / 3.5, 110, EXIT_SPEED);
     await walkTo(c, -170, speed, { offscreen: true });
     S.away = true;
+    // Hide the stage only if nothing is waiting on the user: a question ("Ask me
+    // now" landing mid-exit) must stay on screen until it is answered.
+    if (S.state !== 'asking' && !S.pinned) setVisible(false);
   }
   const wantsAway = () => set() && set().presence === 'reminders';
 
@@ -261,9 +288,7 @@
     const mins = Math.round((sn.nextDueAt - Date.now()) / 60000);
     if (mins < 1) return '';
     if (mins < 90) return `See you in ${mins} min 👋`;
-    const d = new Date(sn.nextDueAt);
-    const t = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    return `See you ${d.toDateString() === new Date().toDateString() ? 'at' : 'tomorrow at'} ${t} 👋`;
+    return `See you ${dayWord(sn.nextDueAt)}at ${clockTime(sn.nextDueAt)} 👋`;
   }
 
   function askText(info) {
@@ -647,7 +672,14 @@
     }
   });
 
-  pf.onDisplay((wa) => { S.wa = wa; S.x = clamp(S.x, 60, wa.width - 60); });
+  pf.onDisplay((wa) => {
+    S.wa = wa;
+    // macOS fires this whenever the work area changes — a Space switch, the Dock
+    // showing/hiding, a resolution change. Clamping here while the buddy is away
+    // used to drag him back into view and leave him stuck on the screen; keep him
+    // parked off-screen and he only ever comes back for a real reminder.
+    if (!S.away) S.x = clamp(S.x, 60, wa.width - 60);
+  });
 
   pf.onRemind((info) => {
     S.snap = info.state; applySettings(info.state.settings);
@@ -703,10 +735,12 @@
 
     if (S.snap.paused) { // paused: nap in view, no greeting
       S.away = false; S.x = W() * 0.78; layout();
+      setVisible(true);
       S.state = 'sleeping'; sleepLoop();
     } else {
       // Off-screen until the launch reminder (or a fallback greeting) walks Bao in.
       S.away = true; S.x = -170; layout();
+      if (S.state !== 'asking' && !S.pinned) setVisible(false);
       S.state = 'idle';
       if (!wantsAway()) {
         setTimeout(() => {

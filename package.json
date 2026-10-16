@@ -1,6 +1,6 @@
 {
   "name": "pixel-buddies",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Buddies — cute animated desktop companions that remind you to drink water.",
   "main": "electron/main.js",
   "author": "umer-2k1",

@@ -4,6 +4,23 @@
   const COLORS = { pink: '#ff8fb1', yellow: '#ffc94d', purple: '#a98bff', orange: '#ff9a5c', blue: '#5ab0ff' };
   if (/Mac/.test(navigator.platform)) document.body.classList.add('mac');
 
+  // "9:00 PM" — always spell out AM/PM, and name the day when it isn't today:
+  // a bare "Next reminder at 9:00" reads as tonight even when it means tomorrow.
+  function clockTime(ms) {
+    const d = new Date(ms);
+    const s = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    if (/\d\s*[ap]\.?m/i.test(s)) return s;
+    return `${(d.getHours() % 12) || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'AM' : 'PM'}`;
+  }
+  function dayWord(ms) {
+    const d = new Date(ms), t = new Date();
+    const key = (x) => `${x.getFullYear()}-${x.getMonth()}-${x.getDate()}`;
+    if (key(d) === key(t)) return '';
+    const tm = new Date(t); tm.setDate(tm.getDate() + 1);
+    if (key(d) === key(tm)) return 'tomorrow ';
+    return `${d.toLocaleDateString([], { weekday: 'short' })} `;
+  }
+
   let st = null;
   let current = null; // the running mini-game
   const buddy = new Mascot($('buddy'));
@@ -160,11 +177,13 @@
   function renderNext() {
     if (!st) return;
     let t;
-    if (st.paused) t = st.pausedUntil > 8e15 ? '⏸ Paused until you resume' : '⏸ Paused until ' + new Date(st.pausedUntil).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+    if (st.paused) t = st.pausedUntil > 8e15 ? '⏸ Paused until you resume' : '⏸ Paused until ' + dayWord(st.pausedUntil) + clockTime(st.pausedUntil);
     else if (st.awaiting) t = chosen().name + ' is asking you right now… 💧';
     else {
       const mins = Math.max(0, Math.round((st.nextDueAt - Date.now()) / 60000));
-      t = mins <= 0 ? 'Next reminder: any moment now' : mins < 60 ? `Next reminder in ${mins} min` : `Next reminder at ${new Date(st.nextDueAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+      t = mins <= 0 ? 'Next reminder: any moment now'
+        : mins < 60 ? `Next reminder in ${mins} min`
+        : `Next reminder ${dayWord(st.nextDueAt)}at ${clockTime(st.nextDueAt)}`;
     }
     $('nextTxt').textContent = t;
   }
