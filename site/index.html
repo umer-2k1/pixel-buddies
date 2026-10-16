@@ -174,17 +174,29 @@
           <img class="dl-icon" src="assets/img/icon.png" alt="Buddies app icon" width="128" height="128" />
           <div class="dl-body">
             <p class="eyebrow">Get Buddies</p>
-            <h2>Download for macOS</h2>
+            <h2>Download Buddies</h2>
             <p class="dl-status" id="dl-status"><span class="pulse"></span><span id="dl-status-text">Coming soon — the first release isn’t out yet.</span></p>
             <div class="dl-btns">
-              <a class="btn btn-blue disabled" id="dl-arm" aria-disabled="true" tabindex="-1" role="link">
-                <span class="dl-l"><b>Apple silicon</b><small>M1, M2, M3 and newer</small></span><span class="chip" data-state>Coming soon</span>
+              <a class="btn btn-blue disabled" id="dl-arm" data-file="Buddies-mac-arm64.dmg" aria-disabled="true" tabindex="-1" role="link">
+                <span class="dl-l"><b>Mac · Apple silicon</b><small>M1, M2, M3, M4 and newer</small></span><span class="chip" data-state>Coming soon</span>
               </a>
-              <a class="btn btn-blue disabled" id="dl-intel" aria-disabled="true" tabindex="-1" role="link">
-                <span class="dl-l"><b>Intel</b><small>Intel-based Macs</small></span><span class="chip" data-state>Coming soon</span>
+              <a class="btn btn-blue disabled" id="dl-intel" data-file="Buddies-mac-x64.dmg" aria-disabled="true" tabindex="-1" role="link">
+                <span class="dl-l"><b>Mac · Intel</b><small>Intel-based Macs</small></span><span class="chip" data-state>Coming soon</span>
+              </a>
+              <a class="btn btn-blue disabled" id="dl-win" data-file="Buddies-win-x64.exe" aria-disabled="true" tabindex="-1" role="link">
+                <span class="dl-l"><b>Windows</b><small>Windows 10 and 11 (64-bit)</small></span><span class="chip" data-state>Coming soon</span>
               </a>
             </div>
-            <p class="dl-note" id="dl-note">Requires macOS 10.15 or later. <a href="https://github.com/umer-2k1/pixel-buddies" rel="noopener">Watch the repository on GitHub</a> to be first to know when it’s out.</p>
+            <div class="cmd" id="dl-cmd" hidden>
+              <p><b>Mac, fastest way:</b> paste this into Terminal. It picks the right version, checks it, installs it and opens it.</p>
+              <div class="cmd-row"><code id="cmd-text">curl -fsSL https://umer-2k1.github.io/pixel-buddies/install.sh | bash</code><button type="button" id="cmd-copy">Copy</button></div>
+            </div>
+            <details class="howto" id="dl-howto" hidden>
+              <summary>First time opening it? (one-time step)</summary>
+              <p><b>Mac:</b> Buddies isn’t notarized by Apple yet, so macOS asks once. If it says it can’t be opened, go to <b>System Settings → Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. The Terminal command above skips this step.</p>
+              <p><b>Windows:</b> if SmartScreen appears, click <b>More info → Run anyway</b>.</p>
+            </details>
+            <p class="dl-note" id="dl-note">Requires macOS 10.15 or later, or Windows 10/11. <a href="https://github.com/umer-2k1/pixel-buddies" rel="noopener">Watch the repository on GitHub</a> to be first to know when it’s out.</p>
           </div>
         </div>
       </div>

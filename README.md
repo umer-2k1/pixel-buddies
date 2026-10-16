@@ -51,6 +51,27 @@ The landing page lives in [`site/`](site/) and is deployed to GitHub Pages by `.
   To publish one: create a release (for example `v1.0.0`) and attach `Buddies-1.0.0.dmg` (Intel) and `Buddies-1.0.0-arm64.dmg` (Apple silicon).
 - After changing `src/shared/*.js`, run `npm run site:sync` so the page picks up the changes.
 
+## Releasing (free, no App Store needed)
+
+1. Bump `version` in `package.json`, commit and push.
+2. Tag it: `git tag v1.0.1 && git push origin v1.0.1`
+3. `.github/workflows/release.yml` builds the Mac (Apple silicon + Intel) and Windows installers, runs
+   `tests/smoke.mjs` on a real Apple-silicon Mac and a real Windows PC, and publishes a GitHub Release with
+   `SHA256SUMS.txt`. The website's download buttons switch on automatically.
+
+Download links never change (they always serve the newest release):
+
+- `https://github.com/umer-2k1/pixel-buddies/releases/latest/download/Buddies-mac-arm64.dmg`
+- `https://github.com/umer-2k1/pixel-buddies/releases/latest/download/Buddies-mac-x64.dmg`
+- `https://github.com/umer-2k1/pixel-buddies/releases/latest/download/Buddies-win-x64.exe`
+- Mac one-liner: `curl -fsSL https://umer-2k1.github.io/pixel-buddies/install.sh | bash`
+
+The apps are not Apple-notarized or Windows-signed, so a browser download shows a one-time warning
+(Mac: System Settings → Privacy & Security → Open Anyway; Windows: More info → Run anyway). The Mac
+one-liner doesn't trigger it. Downloads require the repository (or its releases) to be public.
+
+To test a build locally: `node tests/smoke.mjs "release/mac/Buddies.app/Contents/MacOS/Buddies"` (Node 22+).
+
 ## Layout
 
 ```

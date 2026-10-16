@@ -217,7 +217,7 @@ function createMascotWindow() {
     },
   });
   mascotWin.setAlwaysOnTop(true, 'floating');
-  mascotWin.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  if (process.platform !== 'win32') mascotWin.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   mascotWin.setIgnoreMouseEvents(true, { forward: true });
   lockDown(mascotWin);
   mascotWin.webContents.on('render-process-gone', (_e, d) => {
