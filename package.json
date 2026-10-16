@@ -12,7 +12,8 @@
     "dist": "electron-builder",
     "dist:mac": "electron-builder --mac",
     "dist:win": "electron-builder --win",
-    "dist:linux": "electron-builder --linux"
+    "dist:linux": "electron-builder --linux",
+    "site:sync": "node scripts/build-site.mjs"
   },
   "devDependencies": {
     "electron": "^32.1.2",

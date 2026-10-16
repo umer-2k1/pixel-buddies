@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buddies — cute desktop buddies that remind you to drink water</title>
+  <meta name="description" content="Buddies are tiny animated characters that walk onto your screen, ask if you've had some water, and cheer you on. Pick a panda, cat, bunny, penguin or axolotl." />
+  <meta name="theme-color" content="#8fd0ff" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Buddies — your desktop water buddies" />
+  <meta property="og:description" content="Cute animated buddies that walk onto your screen and remind you to drink water." />
+  <meta property="og:url" content="https://umer-2k1.github.io/pixel-buddies/" />
+  <meta property="og:image" content="https://umer-2k1.github.io/pixel-buddies/assets/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:image" content="https://umer-2k1.github.io/pixel-buddies/assets/img/og.png" />
+  <link rel="canonical" href="https://umer-2k1.github.io/pixel-buddies/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- floating droplets (decorative) -->
+  <div class="drops" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Buddies home">
+        <img src="assets/img/icon.png" alt="" width="40" height="40" />
+        <span>Buddies</span>
+      </a>
+      <nav class="links" aria-label="Primary">
+        <a href="#story">Why</a>
+        <a href="#features">Features</a>
+        <a href="#buddies">Meet the buddies</a>
+        <a href="#video">Watch</a>
+      </nav>
+      <div class="nav-cta">
+        <button class="sound" id="sound" type="button" aria-pressed="false" title="Toggle sound effects">
+          <span aria-hidden="true">🔇</span><span class="sr">Sound off</span>
+        </button>
+        <a class="btn btn-yellow small" href="#download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">A tiny desktop companion for macOS</p>
+          <h1>Water reminders you’ll <span class="hl">actually enjoy.</span></h1>
+          <p class="lead">Buddies are little animated characters that walk onto your screen, ask <em>“have you had some water?”</em> and cheer you on. Made for everyone who forgets to drink while deep in work.</p>
+          <div class="cta-row">
+            <a class="btn btn-yellow" href="#download" id="hero-download">
+              <span>Download</span><span class="chip" id="hero-chip">Coming soon</span>
+            </a>
+            <a class="btn btn-ghost" href="#video">▶ See it in action</a>
+          </div>
+          <ul class="mini-facts" aria-label="Highlights">
+            <li>5 buddies</li><li>3 mini-games</li><li>Lives in your menu bar</li>
+          </ul>
+        </div>
+
+        <div class="demo" id="demo" aria-label="Interactive demo: click Yes or Not yet">
+          <div class="demo-top">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="demo-title">Try it — answer your buddy</span>
+          </div>
+          <div class="demo-doc" aria-hidden="true">
+            <i style="width:62%"></i><i style="width:84%"></i><i style="width:48%"></i><i style="width:74%"></i><i style="width:58%"></i>
+          </div>
+          <div class="bubble" id="bubble" role="status" aria-live="polite">
+            <p id="bubble-text">Have you had some water?</p>
+            <div class="bubble-btns" id="bubble-btns">
+              <button type="button" class="b-yes" id="b-yes">Yes, I have!</button>
+              <button type="button" class="b-no" id="b-no">Not yet</button>
+            </div>
+          </div>
+          <div class="stage" id="stage"><div class="char" id="hero-char"></div></div>
+          <div class="score" id="score" aria-live="polite">0/8 today</div>
+          <div class="who" id="who">Bao the panda</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STORY ===== -->
+    <section class="story" id="story">
+      <div class="wrap">
+        <p class="eyebrow center">The problem</p>
+        <h2 class="center">Long stretches of focus.<br /><span class="hl">Zero sips.</span></h2>
+        <div class="timeline reveal" aria-label="A workday where the water bottle never moves">
+          <div class="t-card"><b>9:00 AM</b><span>Big day. Lots to do.</span></div>
+          <div class="t-card"><b>11:40 AM</b><span>“Just one more email.”</span></div>
+          <div class="t-card"><b>1:15 PM</b><span>“I’ll drink later.”</span></div>
+          <div class="t-card last"><b>3:47 PM</b><span>6 hours. Zero sips.</span></div>
+          <svg class="t-bottle" viewBox="-22 -52 44 100" aria-hidden="true">
+            <defs><clipPath id="bc"><path d="M-6 -41 L6 -41 L6 -35 C17 -31 16 -26 16 -19 L16 30 Q16 39 7 39 L-7 39 Q-16 39 -16 30 L-16 -19 C-16 -26 -17 -31 -6 -35Z"/></clipPath>
+            <linearGradient id="bw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fd0ff"/><stop offset="1" stop-color="#2f8fe8"/></linearGradient></defs>
+            <rect x="-9" y="-50" width="18" height="11" rx="4" fill="#ff8fb1" stroke="#26263a" stroke-width="2.2"/>
+            <path d="M-6 -41 L6 -41 L6 -35 C17 -31 16 -26 16 -19 L16 30 Q16 39 7 39 L-7 39 Q-16 39 -16 30 L-16 -19 C-16 -26 -17 -31 -6 -35Z" fill="#e8f6ff"/>
+            <g clip-path="url(#bc)"><rect x="-30" y="-34" width="60" height="90" fill="url(#bw)"/></g>
+            <path d="M-10 -26 L-10 -4" stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity=".85"/>
+            <path d="M-6 -41 L6 -41 L6 -35 C17 -31 16 -26 16 -19 L16 30 Q16 39 7 39 L-7 39 Q-16 39 -16 30 L-16 -19 C-16 -26 -17 -31 -6 -35Z" fill="none" stroke="#26263a" stroke-width="2.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="center story-note reveal">Phone alarms get swiped away. So Buddies taps you on the shoulder — gently, and with a smile.</p>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features" id="features">
+      <div class="wrap">
+        <p class="eyebrow center">What it does</p>
+        <h2 class="center">A reminder with <span class="hl">personality.</span></h2>
+        <div class="grid">
+          <article class="card reveal"><div class="ico">🚶</div><h3>Walks onto your screen</h3><p>Your buddy strolls in holding a water bottle and asks if you’ve had a drink. No boring pop-ups, then it wanders off again.</p></article>
+          <article class="card reveal"><div class="ico">😄</div><h3>Reacts to your answer</h3><p>Say <b>Yes</b> for confetti and a shared sip. Say <b>Not yet</b> and get a gentle, guilt-free nudge — never nagging.</p></article>
+          <article class="card reveal"><div class="ico">🐼</div><h3>Five buddies to pick from</h3><p>Bao the panda, Mochi the cat, Pip the bunny, Pebble the penguin and Ollie the axolotl. Switch any time.</p></article>
+          <article class="card reveal"><div class="ico">⏰</div><h3>Your schedule, your rules</h3><p>Every few minutes or at set times, with active hours, snooze and pause. It always tells you when it’s coming back.</p></article>
+          <article class="card reveal"><div class="ico">🎮</div><h3>Little games for breaks</h3><p>Drop Catch, Memory Match and Perfect Pour — plus a daily goal and streaks to keep you going.</p></article>
+          <article class="card reveal"><div class="ico">🔒</div><h3>Quiet &amp; private</h3><p>Lives in your menu bar and uses tiny synthesized sounds you can mute. Everything stays on your Mac: no account, no tracking.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BUDDIES ===== -->
+    <section class="buddies" id="buddies">
+      <div class="wrap">
+        <p class="eyebrow center">Pick your buddy</p>
+        <h2 class="center">Whoever keeps <span class="hl">you going.</span></h2>
+        <p class="center sub">Tap a buddy to meet them — or send them to the demo above.</p>
+        <div class="buddy-grid" id="buddy-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== HOW ===== -->
+    <section class="how" id="how">
+      <div class="wrap">
+        <h2 class="center">Three taps to a better afternoon</h2>
+        <ol class="steps">
+          <li class="reveal"><span class="n">1</span><h3>It walks in</h3><p>At the time you choose, your buddy appears and asks about water.</p></li>
+          <li class="reveal"><span class="n">2</span><h3>You answer</h3><p>Click <b>Yes, I have!</b>, <b>Not yet</b>, or <b>Remind me later</b>.</p></li>
+          <li class="reveal"><span class="n">3</span><h3>It reacts &amp; leaves</h3><p>Cheers, a sip, a progress count — then it strolls off until next time.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== VIDEO ===== -->
+    <section class="video" id="video">
+      <div class="wrap video-grid">
+        <div class="video-copy">
+          <p class="eyebrow">The story in 30 seconds</p>
+          <h2>See a workday get <span class="hl">a little brighter.</span></h2>
+          <p class="lead">From “6 hours, zero sips” to one small, happy sip. Turn the sound on for the music and sound effects.</p>
+        </div>
+        <div class="phone">
+          <video id="reel" src="assets/video/reel.mp4" poster="assets/img/reel-poster.jpg" controls playsinline loop preload="none" aria-label="Buddies launch video"></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DOWNLOAD ===== -->
+    <section class="download" id="download">
+      <div class="wrap">
+        <div class="dl-card">
+          <img class="dl-icon" src="assets/img/icon.png" alt="Buddies app icon" width="128" height="128" />
+          <div class="dl-body">
+            <p class="eyebrow">Get Buddies</p>
+            <h2>Download for macOS</h2>
+            <p class="dl-status" id="dl-status"><span class="pulse"></span><span id="dl-status-text">Coming soon — the first release isn’t out yet.</span></p>
+            <div class="dl-btns">
+              <a class="btn btn-blue disabled" id="dl-arm" aria-disabled="true" tabindex="-1" role="link">
+                <span class="dl-l"><b>Apple silicon</b><small>M1, M2, M3 and newer</small></span><span class="chip" data-state>Coming soon</span>
+              </a>
+              <a class="btn btn-blue disabled" id="dl-intel" aria-disabled="true" tabindex="-1" role="link">
+                <span class="dl-l"><b>Intel</b><small>Intel-based Macs</small></span><span class="chip" data-state>Coming soon</span>
+              </a>
+            </div>
+            <p class="dl-note" id="dl-note">Requires macOS 10.15 or later. <a href="https://github.com/umer-2k1/pixel-buddies" rel="noopener">Watch the repository on GitHub</a> to be first to know when it’s out.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <div class="brand small"><img src="assets/img/icon.png" alt="" width="28" height="28" /><span>Buddies</span></div>
+      <p>A toy project, made for fun. 💧 MIT licensed.</p>
+      <a href="https://github.com/umer-2k1/pixel-buddies" rel="noopener">GitHub</a>
+    </div>
+  </footer>
+
+  <div id="fx" aria-hidden="true"></div>
+
+  <script src="assets/js/sound.js"></script>
+  <script src="assets/js/characters.js"></script>
+  <script src="assets/js/mascot.js"></script>
+  <script src="assets/js/download.js"></script>
+  <script src="assets/js/landing.js"></script>
+</body>
+</html>

@@ -41,6 +41,16 @@ Five characters, each fully animated with every expression, gesture and the bott
 
 See [docs/CHARACTER_SPEC.md](docs/CHARACTER_SPEC.md) for the character and animation specification.
 
+## Website
+
+The landing page lives in [`site/`](site/) and is deployed to GitHub Pages by `.github/workflows/pages.yml`
+(<https://umer-2k1.github.io/pixel-buddies/>). It reuses the app's real character code, so the demo on the page is the genuine animation.
+
+- **Preview locally:** `npm run site:sync && python3 -m http.server 8130 --directory site`, then open <http://localhost:8130>.
+- **Download buttons** stay on "Coming soon" until a GitHub Release with `.dmg` files exists, then switch to real links automatically.
+  To publish one: create a release (for example `v1.0.0`) and attach `Buddies-1.0.0.dmg` (Intel) and `Buddies-1.0.0-arm64.dmg` (Apple silicon).
+- After changing `src/shared/*.js`, run `npm run site:sync` so the page picks up the changes.
+
 ## Layout
 
 ```
