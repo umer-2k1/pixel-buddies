@@ -1,0 +1,31 @@
+html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; user-select: none; -webkit-user-select: none;
+  font-family: ui-rounded, 'SF Pro Rounded', 'Nunito', 'Segoe UI', system-ui, sans-serif; }
+#stage { position: fixed; inset: 0; pointer-events: none; }
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+#char { position: absolute; left: 0; bottom: 2px; will-change: transform; }
+#bubble { position: absolute; }
+#char svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+#bubble {
+  position: absolute; width: 270px; box-sizing: border-box; padding: 14px 16px 14px;
+  background: #fff; color: #27324a; border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(40, 70, 130, .22), 0 2px 6px rgba(40, 70, 130, .12);
+  pointer-events: auto; z-index: 10; transform-origin: var(--tail-x, 50%) 100%;
+  animation: pop .38s cubic-bezier(.2, 1.5, .4, 1);
+}
+#bubble.hidden { display: none; }
+#bubble .text { white-space: pre-line; font-size: 16px; font-weight: 700; line-height: 1.3; text-align: center; }
+#bubble .btns { display: flex; gap: 8px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
+#bubble .btns:empty { display: none; }
+#bubble .tail { position: absolute; bottom: -9px; left: var(--tail-x, 50%); width: 20px; height: 20px; margin-left: -10px;
+  background: #fff; transform: rotate(45deg); border-radius: 4px; box-shadow: 4px 4px 8px rgba(40, 70, 130, .1); }
+#bubble button {
+  font: inherit; font-size: 14px; font-weight: 800; border: 0; border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+#bubble button:hover { transform: translateY(-1px) scale(1.04); }
+#bubble button:active { transform: scale(.96); }
+#bubble .yes { background: linear-gradient(180deg, #5cc3ff, #2f8ff0); color: #fff; box-shadow: 0 4px 10px rgba(47, 143, 240, .4); }
+#bubble .no { background: #f1f4fa; color: #4a5875; }
+#bubble .later { background: transparent; color: #8a95ad; font-weight: 700; font-size: 12.5px; padding: 6px 8px; }
+@keyframes pop { 0% { transform: scale(.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }

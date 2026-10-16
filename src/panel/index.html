@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:" />
+  <title>Buddies</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <header>
+    <div id="buddy"></div>
+    <div class="hello">
+      <h1 id="buddyName">Bao</h1>
+      <p id="tagline">Your water buddy</p>
+    </div>
+    <div class="streak" id="streakChip" title="Days in a row hitting your goal">🔥 <b id="streak">0</b></div>
+  </header>
+
+  <nav id="tabs">
+    <button data-tab="today">💧 Today</button>
+    <button data-tab="reminders">⏰ Reminders</button>
+    <button data-tab="buddy">🐾 Buddy</button>
+    <button data-tab="games">🎮 Games</button>
+  </nav>
+
+  <main>
+    <!-- TODAY -->
+    <section data-tab="today">
+      <div class="card hero">
+        <div class="ring">
+          <svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="58" class="trk"/><circle id="ringArc" cx="70" cy="70" r="58" class="arc" transform="rotate(-90 70 70)"/></svg>
+          <div class="ringtxt"><b id="count">0</b><span>of <i id="goalTxt">8</i> glasses</span></div>
+        </div>
+        <div class="heroside">
+          <button class="big" id="drank">💧 I drank a glass</button>
+          <div class="row">
+            <button class="ghost" id="undo">Undo</button>
+            <button class="ghost" id="askNow">Ask me now</button>
+          </div>
+          <div class="next" id="nextTxt"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Glasses</h3>
+        <div id="glasses" class="glasses"></div>
+      </div>
+      <div class="card">
+        <h3>This week</h3>
+        <div id="week" class="week"></div>
+      </div>
+      <div class="card">
+        <h3>Need some quiet?</h3>
+        <div class="row wrap" id="pauseRow">
+          <button class="ghost" data-pause="1h">Pause 1 hour</button>
+          <button class="ghost" data-pause="2h">2 hours</button>
+          <button class="ghost" data-pause="tomorrow">Until tomorrow</button>
+          <button class="ghost" data-pause="none" id="resumeBtn">Resume</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REMINDERS -->
+    <section data-tab="reminders">
+      <div class="card">
+        <h3>How should your buddy remind you?</h3>
+        <div class="seg" id="modeSeg">
+          <button data-v="interval">Every so often</button>
+          <button data-v="times">At set times</button>
+        </div>
+
+        <div id="intervalBox">
+          <label class="field">Remind me every <b id="intervalVal">45</b> minutes</label>
+          <input type="range" id="interval" min="10" max="180" step="5" />
+          <div class="chips" id="intervalChips">
+            <button data-m="20">20m</button><button data-m="30">30m</button><button data-m="45">45m</button>
+            <button data-m="60">1h</button><button data-m="90">1.5h</button><button data-m="120">2h</button>
+          </div>
+          <div class="two">
+            <label class="field">Active from<input type="time" id="activeFrom" /></label>
+            <label class="field">until<input type="time" id="activeTo" /></label>
+          </div>
+          <p class="hint">Your buddy stays quiet outside these hours.</p>
+        </div>
+
+        <div id="timesBox">
+          <label class="field">Reminder times</label>
+          <div class="chips" id="timeChips"></div>
+          <div class="row"><input type="time" id="newTime" value="12:00" /><button class="ghost" id="addTime">Add time</button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>When you say “Not yet”</h3>
+        <div class="two">
+          <label class="field">Ask again after
+            <select id="retryMin"><option value="5">5 min</option><option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option></select>
+          </label>
+          <label class="field">Gently ask up to
+            <select id="maxRetries"><option value="0">never again</option><option value="1">1 time</option><option value="2">2 times</option><option value="3">3 times</option><option value="5">5 times</option></select>
+          </label>
+        </div>
+        <label class="field">If I don’t answer, wait
+          <select id="timeout"><option value="30">30 sec</option><option value="60">1 min</option><option value="90">90 sec</option><option value="180">3 min</option></select>
+        </label>
+      </div>
+
+      <div class="card">
+        <label class="field">Daily goal
+          <div class="stepper"><button id="goalMinus">−</button><b id="goalVal">8</b><button id="goalPlus">+</button><span>glasses</span></div>
+        </label>
+      </div>
+    </section>
+
+    <!-- BUDDY -->
+    <section data-tab="buddy">
+      <div class="card">
+        <h3>Choose your buddy</h3>
+        <div id="charGrid" class="chargrid"></div>
+      </div>
+      <div class="card">
+        <h3>About you</h3>
+        <label class="field">What should your buddy call you?<input type="text" id="userName" maxlength="24" placeholder="friend" /></label>
+      </div>
+      <div class="card">
+        <h3>Your buddy on the desktop</h3>
+        <div class="seg" id="presenceSeg">
+          <button data-v="always">Hangs out all day</button>
+          <button data-v="reminders">Only shows up to remind</button>
+        </div>
+        <label class="field">Size <b id="scaleVal"></b></label>
+        <input type="range" id="scale" min="0.7" max="1.4" step="0.05" />
+        <label class="field">Bottle colour</label>
+        <div class="swatches" id="swatches"></div>
+        <label class="toggle"><input type="checkbox" id="idleAntics" /><span></span>Little antics (walking, dancing, sipping)</label>
+        <label class="toggle"><input type="checkbox" id="openAtLogin" /><span></span>Start Buddies when I log in</label>
+      </div>
+      <div class="card">
+        <h3>Sound</h3>
+        <label class="toggle"><input type="checkbox" id="sound" /><span></span>Sound effects</label>
+        <label class="field">Volume <b id="volVal"></b></label>
+        <input type="range" id="volume" min="0" max="1" step="0.05" />
+        <div class="row"><button class="ghost" id="testSound">🔔 Test sound</button></div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section data-tab="games">
+      <div id="gamesMenu">
+        <p class="hint">Take a little break with your buddy. Every game earns a cheer!</p>
+        <div class="gamegrid" id="gameGrid"></div>
+      </div>
+      <div id="gameArea" class="hidden">
+        <div class="gamebar"><button class="ghost" id="gameBack">← Back</button><b id="gameTitle"></b><span id="gameScore"></span></div>
+        <div id="gameHost"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../shared/sound.js"></script>
+  <script src="../shared/characters.js"></script>
+  <script src="../shared/mascot.js"></script>
+  <script src="games.js"></script>
+  <script src="panel.js"></script>
+</body>
+</html>
