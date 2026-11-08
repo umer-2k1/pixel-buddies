@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"><script src="../../../src/shared/mascot.js"></script><script src="../../../src/shared/characters.js"></script><script src="common.js"></script><style>
+body{background:linear-gradient(135deg,#d9efff,#ffe3ef)}
+h1{position:absolute;left:0;width:1270px;top:44px;text-align:center;font-size:72px}
+.sub{position:absolute;left:0;width:1270px;top:132px;text-align:center;font-size:30px;font-weight:700;color:var(--soft)}
+.c{position:absolute;top:210px;width:222px;height:480px;border-radius:34px;background:#fff;box-shadow:0 22px 56px rgba(18,60,140,.22);text-align:center;overflow:hidden}
+.st{height:262px;display:flex;align-items:flex-end;justify-content:center}.st .char{position:relative;width:176px;height:211px;margin-bottom:22px}
+.c h3{font-size:36px;margin-top:20px}.c .sp{font-size:22px;font-weight:900;color:var(--blue-d);margin-top:3px}.c p{font-size:19px;color:var(--soft);font-weight:700;padding:8px 18px 0;line-height:1.25}
+</style></head><body><h1>Pick your <span class="hl">buddy.</span></h1><p class="sub">Panda, cat, bunny, penguin or axolotl. Switch any time.</p><div id="row"></div>
+<script>
+const BG={panda:'#bcdcff,#d9ecff',cat:'#ffc88f,#ffe6c8',bunny:'#d4c5ff,#eee6ff',penguin:'#a3b9ea,#d3e0f7',axolotl:'#ffbcd3,#ffe0ec'};
+Characters.list.forEach((c,i)=>{const d=document.createElement('div');d.className='c';d.style.left=(48+i*238)+'px';
+d.innerHTML='<div class="st" style="background:linear-gradient(180deg,'+BG[c.id]+')"><div class="char" id="b'+i+'"></div></div><h3>'+c.name+'</h3><div class="sp">'+c.species+'</div><p>'+c.tagline+'</p>';
+document.getElementById('row').appendChild(d);buddy(document.getElementById('b'+i),c.id,'joy',{lArm:160,rArm:150,bottle:14});});
+</script></body></html>

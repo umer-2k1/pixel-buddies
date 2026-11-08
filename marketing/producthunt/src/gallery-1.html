@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"><script src="../../../src/shared/mascot.js"></script><script src="common.js"></script><style>
+body{background:linear-gradient(135deg,#d9efff 0%,#8fd0ff 100%)}
+h1{position:absolute;left:70px;top:158px;width:600px;font-size:80px}
+.sub{position:absolute;left:72px;top:446px;width:540px;font-size:29px;line-height:1.32;color:var(--soft);font-weight:700}
+.pills{position:absolute;left:72px;top:598px;display:flex;gap:14px}
+.pills .pill{padding:14px 26px;font-size:24px;background:#fff;box-shadow:0 10px 26px rgba(18,60,140,.16)}
+.pills .pill.y{background:var(--yellow)}
+.win{left:700px;top:80px;width:500px;height:600px;overflow:hidden}
+.bar{height:58px;background:#e3edfb;display:flex;align-items:center;gap:9px;padding:0 22px}
+.bar i{width:14px;height:14px;border-radius:50%;display:block}
+.docs{position:absolute;left:28px;right:28px;top:84px;display:grid;gap:15px}.docs b{display:block;height:15px;border-radius:8px;background:#e8eff9}
+.bubble{position:absolute;left:26px;right:26px;top:150px;background:#fff;border-radius:28px;padding:26px 26px 28px;text-align:center;box-shadow:0 18px 44px rgba(8,40,110,.28);z-index:3}
+.bubble:after{content:"";position:absolute;left:96px;bottom:-13px;width:28px;height:28px;background:#fff;transform:rotate(45deg);border-radius:6px}
+.bubble p{font-size:35px;font-weight:900;letter-spacing:-.02em;line-height:1.12}
+.btns{display:flex;gap:14px;justify-content:center;margin-top:22px}
+.btns .pill{padding:15px 30px;font-size:25px}
+.yes{background:linear-gradient(180deg,#1f78e6,#0f55c2);color:#fff;box-shadow:0 10px 22px rgba(15,85,194,.4)}.no{background:#eef2fa;color:var(--soft)}
+</style></head><body>
+<div class="circle" style="left:-180px;top:-200px;width:620px;height:620px;background:rgba(255,255,255,.35)"></div>
+<div class="circle" style="left:760px;top:420px;width:780px;height:780px;background:rgba(255,255,255,.28)"></div>
+<div class="logo" style="left:70px;top:62px"><img src="../../../site/assets/img/icon.png"><span>Buddies</span></div>
+<h1>Water reminders you’ll <span class="hl">actually enjoy.</span></h1>
+<p class="sub">Tiny animated buddies walk onto your screen, ask if you’ve had some water, and cheer you on.</p>
+<div class="pills"><span class="pill">For Mac &amp; Windows</span><span class="pill y">Free</span></div>
+<div class="card win abs"><div class="bar"><i style="background:#ff6b6b"></i><i style="background:#ffc94d"></i><i style="background:#46d369"></i></div>
+<div class="docs"><b style="width:62%"></b><b style="width:88%"></b><b style="width:48%"></b><b style="width:74%"></b></div>
+<div class="bubble"><p>Have you had some water?</p><div class="btns"><span class="pill yes">Yes, I have!</span><span class="pill no">Not yet</span></div></div>
+<div class="char" id="a" style="left:96px;top:262px;width:310px;height:372px"></div></div>
+<script>place('a','panda','ask')</script></body></html>

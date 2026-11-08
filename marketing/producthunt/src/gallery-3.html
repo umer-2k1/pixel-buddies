@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"><script src="../../../src/shared/mascot.js"></script><script src="common.js"></script><style>
+body{background:linear-gradient(135deg,#d9efff,#ece5ff)}
+h1{position:absolute;left:0;width:1270px;top:46px;text-align:center;font-size:64px}
+.sub{position:absolute;left:0;width:1270px;top:128px;text-align:center;font-size:29px;font-weight:700;color:var(--soft)}
+.panel{position:absolute;top:196px;width:560px;height:520px;border-radius:40px;overflow:hidden}
+.tag{position:absolute;left:26px;top:24px;font-size:26px;padding:12px 24px;z-index:4}
+.say{position:absolute;left:50%;top:64px;transform:translateX(-50%);width:440px;background:#fff;border-radius:26px;padding:20px 24px;text-align:center;font-size:30px;font-weight:900;letter-spacing:-.02em;line-height:1.14;box-shadow:0 16px 36px rgba(8,40,110,.25);z-index:3}
+.say:after{content:"";position:absolute;left:50%;margin-left:-13px;bottom:-12px;width:26px;height:26px;background:#fff;transform:rotate(45deg);border-radius:5px}
+.chip{position:absolute;right:24px;bottom:22px;padding:12px 24px;font-size:26px;background:var(--yellow);box-shadow:0 10px 22px rgba(0,0,0,.16)}
+.sp{position:absolute;font-size:44px}
+</style></head><body>
+<h1>It reacts to how <span class="hl">you answer.</span></h1>
+<p class="sub">Celebrates a yes. Never guilt-trips a no.</p>
+<div class="panel" style="left:60px;background:linear-gradient(180deg,#8fd0ff,#d9f0ff)">
+ <span class="pill tag" style="background:linear-gradient(180deg,#1f78e6,#0f55c2);color:#fff">Yes, I have!</span>
+ <div class="say" style="top:84px">Nice one! Refreshing. 💙</div>
+ <div class="char" id="a" style="left:130px;top:150px;width:300px;height:360px"></div>
+ <span class="sp" style="left:70px;top:230px">✨</span><span class="sp" style="left:460px;top:200px">🎉</span><span class="sp" style="left:80px;top:400px;font-size:34px">⭐</span><span class="sp" style="left:470px;top:380px;font-size:34px">💧</span>
+ <span class="pill chip">5/8 today</span></div>
+<div class="panel" style="left:650px;background:linear-gradient(180deg,#a9b8e8,#e4e8fb)">
+ <span class="pill tag" style="background:#fff;color:var(--soft)">Not yet</span>
+ <div class="say" style="top:84px">No rush! A few sips would feel great.</div>
+ <div class="char" id="b" style="left:130px;top:150px;width:300px;height:360px"></div>
+ <span class="pill chip" style="background:#fff;color:var(--soft)">See you in 10 min</span></div>
+<script>place('a','panda','joy');place('b','panda','hmm')</script></body></html>
