@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css"><style>
+html,body{width:480px;height:480px}body{background:linear-gradient(160deg,#6cc2ff,#1f78e6)}
+</style>
+<script>
+// Virtual clock: every timer and animation frame is driven by step(), so the capture is exact.
+(function(){
+  let T=1000; const timers=[]; let raf=[]; let id=0; const realST=window.setTimeout;
+  performance.now=()=>T;
+  window.setTimeout=(fn,ms=0)=>{timers.push({id:++id,at:T+ms,fn});return id};
+  window.clearTimeout=(i)=>{const k=timers.findIndex(t=>t.id===i);if(k>=0)timers.splice(k,1)};
+  window.requestAnimationFrame=(fn)=>{raf.push(fn);return 1};
+  const flush=()=>new Promise(r=>realST(r,0));
+  window.step=async function(ms){
+    T+=ms;
+    for(;;){timers.sort((a,b)=>a.at-b.at);if(!timers.length||timers[0].at>T)break;const t=timers.shift();t.fn();await flush();}
+    const cbs=raf;raf=[];cbs.forEach(f=>f(T));await flush();
+  };
+})();
+</script>
+<script src="../../../src/shared/mascot.js"></script></head>
+<body><div class="circle" style="left:-60px;top:-80px;width:360px;height:360px;background:rgba(255,255,255,.22)"></div>
+<div class="char" id="a" style="left:50px;top:40px;width:380px;height:456px"></div>
+<script>
+const BASE={lArm:160,rArm:150,bottle:14,rot:0,y:0,sx:1,sy:1};
+const m=new Mascot(document.getElementById('a'),{skin:'panda',bottleColor:'pink'});
+m.autoLook=false;m.blinkS.next=1e12;
+m.set(Object.assign({},Mascot.EMO.joy,BASE));m.lookSm.x=0;m.lookSm.y=0;
+window.start=()=>{m.run(async c=>{
+  await c.wait(300);
+  await m.hop(c,46,520);
+  await c.to({rot:-5},150);await c.to({rot:5},220);await c.to({rot:-5},220);await c.to({rot:0},150);
+  await m.hop(c,30,420);
+  await c.to(BASE,200);
+},{reset:false});};
+</script></body></html>

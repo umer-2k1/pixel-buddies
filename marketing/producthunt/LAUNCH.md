@@ -26,6 +26,7 @@ Free
 
 ## Images
 - Thumbnail: `out/thumbnail-240.png` (240x240; a 480px version is in `out/thumbnail-480.png`)
+- Animated thumbnail (optional): `out/thumbnail-240.gif` (240x240, 56 frames, 20 fps, loops, 378 KB). Product Hunt shows only the first frame in feeds, so the static PNG is the safe default.
 - Gallery, in order: `out/gallery-1.png` … `gallery-7.png` (1270x760)
 - Video: Product Hunt only accepts a YouTube link. Upload `videos/buddies-launch/renders/buddies-launch.mp4` (16:9) and paste the link.
 
